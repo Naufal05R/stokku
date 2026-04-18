@@ -7,13 +7,13 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_transactions_type" AS ENUM('inbound', 'outbound');
   CREATE TABLE "items" (
   	"id" serial PRIMARY KEY NOT NULL,
-  	"code" varchar NOT NULL,
   	"name" varchar NOT NULL,
+  	"position" varchar,
+  	"code" varchar NOT NULL,
   	"category" "enum_items_category",
   	"unit" "enum_items_unit" NOT NULL,
   	"quantity" numeric DEFAULT 0 NOT NULL,
   	"min_quantity" numeric DEFAULT 0,
-  	"position" varchar,
   	"updated_at" timestamp(3) with time zone DEFAULT now() NOT NULL,
   	"created_at" timestamp(3) with time zone DEFAULT now() NOT NULL
   );

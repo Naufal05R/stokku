@@ -12,14 +12,20 @@
           "primaryKey": true,
           "notNull": true
         },
-        "code": {
-          "name": "code",
+        "name": {
+          "name": "name",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "position": {
+          "name": "position",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "code": {
+          "name": "code",
           "type": "varchar",
           "primaryKey": false,
           "notNull": true
@@ -51,12 +57,6 @@
           "primaryKey": false,
           "notNull": false,
           "default": 0
-        },
-        "position": {
-          "name": "position",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
         },
         "updated_at": {
           "name": "updated_at",
@@ -1137,6 +1137,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "881c611a-f688-4e16-ac72-471a72897145",
+  "id": "1f4b6491-11f1-4112-b0fb-79b7ca8274b0",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

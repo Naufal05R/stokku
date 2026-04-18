@@ -1,0 +1,69 @@
+name: Build/Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Linux dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libarchive-tools icnsutils graphicsmagick
+
+      - name: Create .env file
+        run: |
+          if [ -n "${{ secrets.ENV_FILE }}" ]; then
+            echo "${{ secrets.ENV_FILE }}" > .env
+          else
+            touch .env
+          fi
+        shell: bash
+
+      - name: Setup Database
+        run: |
+          pnpm payload:migrate
+          pnpm payload:seed
+        env:
+          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
+
+      - name: Build Next.js
+        run: pnpm next build
+        env:
+          NODE_OPTIONS: --no-deprecation
+
+      - name: Build & Release Electron
+        run: |
+          if [ "$RUNNER_OS" == "macOS" ]; then
+             ulimit -n 20000
+          fi
+          pnpm electron-builder --publish always
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

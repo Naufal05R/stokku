@@ -9,27 +9,59 @@ You are an expert Payload CMS developer. When working with Payload projects, fol
 3. **Type Generation**: Run `generate:types` script after schema changes
 4. **Transaction Safety**: Always pass `req` to nested operations in hooks
 5. **Access Control**: Understand Local API bypasses access control by default
-6. **Access Control**: Ensure roles exist when modifiyng collection or globals with access controls
+6. **Access Control**: Ensure roles exist when modifying collection or globals with access controls
 
 ### Code Validation
 
 - To validate typescript correctness after modifying code run `tsc --noEmit`
 - Generate import maps after creating or modifying components.
 
-## Project Structure
+## Project structure (module-based)
+
+This repository uses a **module-based layout** under `src/modules`. Each feature domain gets its own folder; only some modules include every subfolder below. Add a subfolder when that concern appears for that module (for example `schemas/` when you introduce Zod for that feature).
 
 ```
 src/
-├── app/
-│   ├── (frontend)/          # Frontend routes
-│   └── (payload)/           # Payload admin routes
-├── collections/             # Collection configs
-├── globals/                 # Global configs
-├── components/              # Custom React components
-├── hooks/                   # Hook functions
-├── access/                  # Access control functions
-└── payload.config.ts        # Main config
+├── app/                       # Next.js App Router
+│   ├── (frontend)/            # Public / storefront routes
+│   └── (payload)/             # Payload admin, REST, GraphQL routes
+├── lib/                       # Global infrastructure (SDK, DB-adjacent wiring, third-party)
+│   ├── collections/           # Payload collection configs (fields, access, hooks, admin UI paths)
+│   └── sdk/                   # Payload / client initialization helpers used app-wide
+├── modules/
+│   └── [module-name]/         # e.g. auth, common, dashboard, items, transactions, users, account
+│       ├── actions/           # Server Actions: bridge for mutations callable from Client Components
+│       ├── assets/            # Static non-component media (images, videos) scoped to the module
+│       ├── components/        # UI components used only inside this module (or exported on purpose)
+│       ├── constants/         # Static config, labels, internal enums
+│       ├── guards/            # Type guards, validators, predicates (narrowing & runtime checks)
+│       ├── repositories/      # Data access, read-oriented: fetch via Payload/local API without mutation
+│       ├── schemas/           # Zod / DTO validation for inputs and boundaries
+│       ├── services/          # Business logic & mutations: create, update, delete, cache revalidation
+│       ├── templates/         # Pure synchronous layout/structure (no async, no interactivity); data passed in via props
+│       ├── types/             # Module-local TypeScript types and interfaces
+│       └── utils/             # Small pure helpers internal to the module
+├── migrations/                # Payload database migrations
+├── scripts/                   # CLI scripts (e.g. seeds registered in `payload.config.ts` `bin`)
+├── styles/                    # Global styles
+├── payload.config.ts          # Payload `buildConfig` entry
+└── payload-types.ts           # Generated types (`generate:types`)
 ```
+
+### How layers interact
+
+- **`src/lib/collections`**: Payload schema and server-side collection behavior (access, hooks). Admin custom components are referenced here by path (often pointing into `modules/`).
+- **`src/modules/*/repositories`**: Read-only queries (`find`, `findByID`, etc.), ideally thin wrappers around `getPayload` / Local API with correct `overrideAccess` when a user context is passed.
+- **`src/modules/*/services`**: Writes and side effects (create/update/delete, revalidatePath/Tag, cross-collection orchestration).
+- **`src/modules/*/actions`**: `"use server"` entry points that validate input (often via `schemas/`) and delegate to `services/` so Client Components never call Local API directly.
+- **`src/modules/*/templates`**: Composes `components/` into full-page or admin views; **no async work or event handlers here**—fetch in the route (or a parent Server Component) and pass props. Interactivity lives in `components/` (`'use client'` when required).
+- **`src/modules/common`**: Shared UI primitives, shared templates, cross-cutting `guards`, `types`, and `utils`—prefer importing from here instead of reaching across unrelated feature modules.
+
+### Conventions
+
+- **Thin routes**: `app/**/page.tsx` (and Payload view overrides) should orchestrate: call repositories/services, then render a module `template` with props.
+- **Dependency direction**: `app` and `modules/*` may depend on `lib/`; avoid circular imports between modules (use `common` for shared pieces).
+- **Optional folders**: Not every module needs `actions/`, `assets/`, or `schemas/` until the feature requires them.
 
 ## Configuration
 
@@ -1014,11 +1046,11 @@ export const myPlugin =
 
 ### Organization
 
-1. Keep collections in separate files
-2. Extract access control to `access/` directory
-3. Extract hooks to `hooks/` directory
-4. Use reusable field factories for common patterns
-5. Document complex access control with comments
+1. Keep Payload collection configs in `src/lib/collections/` (one concern per file or subfolder when large)
+2. Keep product and admin UI logic in `src/modules/[module-name]/` using the folder roles above (repositories vs services vs actions)
+3. Put cross-feature UI, guards, types, and helpers in `src/modules/common/` rather than duplicating across modules
+4. Use reusable field factories and small hook helpers next to the collection or in dedicated files under `lib/collections/`
+5. Document non-obvious access control and hook context flags in place with short comments
 
 ## Common Gotchas
 

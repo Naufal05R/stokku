@@ -6,22 +6,22 @@ import { ItemList } from '../components/item-list'
 import { ItemListTemplate } from './item-list-template'
 
 interface ItemListPageProps {
-  page: number
-  limit: number
-  search?: string
-  sort?: string
-  category?: string
-  unit?: string
+  searchParams: Promise<{
+    [key: string]: string | string[] | undefined
+  }>
 }
 
-export const ItemListPage = async ({
-  page,
-  limit,
-  search,
-  sort,
-  category,
-  unit,
-}: ItemListPageProps) => {
+const isString = (value: unknown): value is string => typeof value === 'string'
+
+export const ItemListPage = async (props: ItemListPageProps) => {
+  const searchParams = await props.searchParams
+  const page = Number(searchParams?.page || 1)
+  const limit = Number(searchParams?.limit || 10)
+  const search = typeof searchParams?.search === 'string' ? searchParams.search : undefined
+  const sort = typeof searchParams?.sort === 'string' ? searchParams.sort : undefined
+  const category = typeof searchParams?.category === 'string' ? searchParams.category : undefined
+  const unit = typeof searchParams?.unit === 'string' ? searchParams.unit : undefined
+
   return (
     <ItemListTemplate>
       <Suspense
@@ -32,12 +32,12 @@ export const ItemListPage = async ({
         }
       >
         <ItemList
-          page={page}
-          limit={limit}
-          search={search}
-          sort={sort}
-          category={category}
-          unit={unit}
+          page={Number(page || 1)}
+          limit={Number(limit || 10)}
+          search={isString(search) ? search : undefined}
+          sort={isString(sort) ? sort : undefined}
+          category={isString(category) ? category : undefined}
+          unit={isString(unit) ? unit : undefined}
         />
       </Suspense>
     </ItemListTemplate>

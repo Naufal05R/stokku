@@ -10,7 +10,7 @@ import { DashboardPage as DashboardPage_ea1cad2e162a167803a024a1d5632448 } from 
 import { AccountPage as AccountPage_5b7a663f957bc26aba8f67294a19adb3 } from '@/modules/account/templates'
 import { LoginPage as LoginPage_dc53338288fb8108f10edc8a62101995 } from '@/modules/auth/templates'
 import { ForgotPasswordPage as ForgotPasswordPage_dc53338288fb8108f10edc8a62101995 } from '@/modules/auth/templates'
-import { CollectionCards as CollectionCards_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
+import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
   "@/modules/items/templates#ItemCreatePage": ItemCreatePage_a18b3e4e64b1c1039ff3b45c67973c65,
@@ -25,5 +25,5 @@ export const importMap = {
   "@/modules/account/templates#AccountPage": AccountPage_5b7a663f957bc26aba8f67294a19adb3,
   "@/modules/auth/templates#LoginPage": LoginPage_dc53338288fb8108f10edc8a62101995,
   "@/modules/auth/templates#ForgotPasswordPage": ForgotPasswordPage_dc53338288fb8108f10edc8a62101995,
-  "@payloadcms/ui/rsc#CollectionCards": CollectionCards_ab83ff7e88da8d3530831f296ec4756a
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

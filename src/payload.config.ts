@@ -14,6 +14,9 @@ const dirname = path.dirname(filename)
 export default buildConfig({
   admin: {
     user: Users.slug,
+    meta: {
+      titleSuffix: '— Stokku',
+    },
     components: {
       graphics: {
         Logo: '@/modules/common/components#Logo',

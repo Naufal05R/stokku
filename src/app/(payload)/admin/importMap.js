@@ -12,6 +12,7 @@ import { LoginPage as LoginPage_dc53338288fb8108f10edc8a62101995 } from '@/modul
 import { ForgotPasswordPage as ForgotPasswordPage_dc53338288fb8108f10edc8a62101995 } from '@/modules/auth/templates'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
+/** @type import('payload').ImportMap */
 export const importMap = {
   "@/modules/items/templates#ItemCreatePage": ItemCreatePage_a18b3e4e64b1c1039ff3b45c67973c65,
   "@/modules/items/templates#ItemListPage": ItemListPage_a18b3e4e64b1c1039ff3b45c67973c65,

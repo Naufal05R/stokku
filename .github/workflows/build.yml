@@ -1,69 +1,68 @@
-name: Build/Release
+name: Build and push
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-
+  build-and-push:
+    runs-on: ubuntu-latest
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
         with:
-          node-version: 20
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
+      - id: meta-app
+        uses: docker/metadata-action@v5
         with:
-          version: 9
+          images: ghcr.io/naufal05r/stokku
+          tags: |
+            type=raw,value=app
+            type=sha,prefix=app-sha-,format=short
 
-      - name: Install dependencies
-        run: pnpm install
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runner
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta-app.outputs.tags }}
+          labels: ${{ steps.meta-app.outputs.labels }}
+          cache-from: type=gha,scope=app   # ✅ scope spesifik
+          cache-to: type=gha,mode=max,scope=app
 
-      - name: Install Linux dependencies
-        if: matrix.os == 'ubuntu-latest'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libarchive-tools icnsutils graphicsmagick
+      - id: meta-tools
+        uses: docker/metadata-action@v5
+        if: github.event_name != 'pull_request'   # ✅ skip saat PR
+        with:
+          images: ghcr.io/naufal05r/stokku
+          tags: |
+            type=raw,value=tools
+            type=sha,prefix=tools-sha-,format=short
 
-      - name: Create .env file
-        run: |
-          if [ -n "${{ secrets.ENV_FILE }}" ]; then
-            echo "${{ secrets.ENV_FILE }}" > .env
-          else
-            touch .env
-          fi
-        shell: bash
-
-      - name: Setup Database
-        run: |
-          pnpm payload:migrate
-          pnpm payload:seed
-        env:
-          PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-
-      - name: Build Next.js
-        run: pnpm next build
-        env:
-          NODE_OPTIONS: --no-deprecation
-
-      - name: Build & Release Electron
-        run: |
-          if [ "$RUNNER_OS" == "macOS" ]; then
-             ulimit -n 20000
-          fi
-          pnpm electron-builder --publish always
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        if: github.event_name != 'pull_request'   # ✅ skip saat PR
+        with:
+          context: .
+          target: builder   # ✅ bukan tools
+          push: true
+          tags: ${{ steps.meta-tools.outputs.tags }}
+          labels: ${{ steps.meta-tools.outputs.labels }}
+          cache-from: type=gha,scope=tools   # ✅ scope spesifik
+          cache-to: type=gha,mode=max,scope=tools

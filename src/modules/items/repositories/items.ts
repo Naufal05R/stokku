@@ -1,10 +1,9 @@
 import 'server-only'
 
-import { getPayload } from 'payload'
-import config from '@payload-config'
-
 import type { Item } from '@/payload-types'
 import type { Where } from 'payload'
+
+import { payload } from '@/lib/sdk'
 
 export const getItems = async (options?: {
   limit?: number
@@ -12,8 +11,6 @@ export const getItems = async (options?: {
   sort?: string
   where?: Where
 }): Promise<{ docs: Item[]; totalPages: number; totalDocs: number }> => {
-  const payload = await getPayload({ config })
-
   const { limit = 10, page = 1, sort, where } = options || {}
 
   const result = await payload.find({
@@ -32,8 +29,6 @@ export const getItems = async (options?: {
 }
 
 export const getItemById = async (id: string | number): Promise<Item | null> => {
-  const payload = await getPayload({ config })
-
   try {
     const item = await payload.findByID({
       collection: 'items',

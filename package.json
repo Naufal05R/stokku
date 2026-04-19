@@ -6,14 +6,14 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
-    "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build --experimental-build-mode compile",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "generate:types": "cross-env NODE_OPTIONS=--no-deprecation payload generate:types",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
-    "payload:migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
-    "payload:seed": "cross-env NODE_OPTIONS=--no-deprecation payload seed",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation payload seed",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --no-experimental-strip-types\" pnpm exec playwright test",
@@ -84,7 +84,7 @@
     "@libsql/linux-x64-musl": "^0.5.29"
   },
   "engines": {
-    "node": ">=22.15.0",
+    "node": ">=20.9.0",
     "pnpm": "^9 || ^10"
   },
   "pnpm": {

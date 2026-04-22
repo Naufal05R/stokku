@@ -14,7 +14,8 @@ services:
       retries: 10
 
   app:
-    image: ghcr.io/naufal05r/stokku:app
+    image: ghcr.io/naufal05r/stokku:latest
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
@@ -26,40 +27,8 @@ services:
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
-
-  migrate:
-    image: ghcr.io/naufal05r/stokku:tools
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: builder
-    profiles:
-      - tools
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
-    command: ['pnpm', 'migrate']
-
-  seed:
-    image: ghcr.io/naufal05r/stokku:tools
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: builder
-    profiles:
-      - tools
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
       ADMIN_DEFAULT_USER_EMAIL: ${ADMIN_DEFAULT_USER_EMAIL}
       ADMIN_DEFAULT_USER_PASSWORD: ${ADMIN_DEFAULT_USER_PASSWORD}
-    command: ['pnpm', 'seed']
 
 volumes:
   postgres_data:

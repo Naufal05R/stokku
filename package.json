@@ -84,7 +84,7 @@
     "@libsql/linux-x64-musl": "^0.5.29"
   },
   "engines": {
-    "node": ">=20.9.0",
+    "node": ">=22.15.0",
     "pnpm": "^9 || ^10"
   },
   "pnpm": {

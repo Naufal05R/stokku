@@ -188,10 +188,14 @@ html {
 }
 
 .app-header {
-  @apply h-16 border-b border-border justify-end;
+  @apply sticky top-0 h-16 border-b border-border bg-inherit justify-end;
 
   &__actions-wrapper {
-    @apply mr-0;
+    @apply mr-0 flex-1;
+  }
+
+  &__actions {
+    @apply flex-1 items-center justify-between max-w-none;
   }
 
   &__account,
@@ -199,7 +203,7 @@ html {
     display: none !important;
   }
 
-  &__step-nav {
+  &__step-nav-wrapper {
     @apply hidden;
   }
 

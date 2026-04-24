@@ -18,11 +18,10 @@ export default buildConfig({
       titleSuffix: '— Stokku',
     },
     components: {
-      graphics: {
-        Logo: '@/modules/common/components#Logo',
-        Icon: '@/modules/common/components#Icon',
-      },
-      actions: ['@/modules/common/components#SwitchTheme'],
+      actions: [
+        '@/modules/common/components#SwitchTheme',
+        '@/modules/common/components/custom/user-badges#UserBadges',
+      ],
       Nav: '@/modules/common/components#Nav',
       views: {
         dashboard: {

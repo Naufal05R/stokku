@@ -8,9 +8,22 @@ export const Users: CollectionConfig = {
   },
   access: {
     create: () => false,
+    read: () => false,
     update: () => false,
     delete: () => false,
   },
   auth: true,
-  fields: [],
+  fields: [
+    {
+      name: 'role',
+      label: 'Role',
+      type: 'select',
+      required: true,
+      defaultValue: 'guest',
+      options: [
+        { label: 'Admin', value: 'admin' },
+        { label: 'Guest', value: 'guest' },
+      ],
+    },
+  ],
 }

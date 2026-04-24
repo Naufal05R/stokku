@@ -168,6 +168,7 @@ export interface Transaction {
  */
 export interface User {
   id: number;
+  role: 'admin' | 'guest';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -298,6 +299,7 @@ export interface TransactionsSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

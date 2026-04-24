@@ -35,6 +35,7 @@ export const enum_items_category = pgEnum('enum_items_category', [
 ])
 export const enum_items_unit = pgEnum('enum_items_unit', ['pcs', 'box', 'kg', 'meter'])
 export const enum_transactions_type = pgEnum('enum_transactions_type', ['inbound', 'outbound'])
+export const enum_users_role = pgEnum('enum_users_role', ['admin', 'guest'])
 
 export const items = pgTable(
   'items',
@@ -116,6 +117,7 @@ export const users = pgTable(
   'users',
   {
     id: serial('id').primaryKey(),
+    role: enum_users_role('role').notNull().default('guest'),
     updatedAt: timestamp('updated_at', { mode: 'string', withTimezone: true, precision: 3 })
       .defaultNow()
       .notNull(),
@@ -357,6 +359,7 @@ type DatabaseSchema = {
   enum_items_category: typeof enum_items_category
   enum_items_unit: typeof enum_items_unit
   enum_transactions_type: typeof enum_transactions_type
+  enum_users_role: typeof enum_users_role
   items: typeof items
   transactions: typeof transactions
   users_sessions: typeof users_sessions

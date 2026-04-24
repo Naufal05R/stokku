@@ -32,8 +32,7 @@ export const Transactions: CollectionConfig<'transactions'> = {
   access: {
     update: () => false,
     delete: () => false,
-    read: () => true,
-    create: () => true,
+    create: ({ req }) => req.user?.role === 'admin',
   },
   admin: {
     useAsTitle: 'reference',

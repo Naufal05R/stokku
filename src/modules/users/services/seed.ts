@@ -20,7 +20,7 @@ export const seedUser = async (payload: Payload): Promise<void> => {
   if (existingUser.totalDocs === 0) {
     await payload.create({
       collection: 'users',
-      data: { email, password },
+      data: { email, password, role: 'admin' },
     })
   }
 

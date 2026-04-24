@@ -1,3 +1,5 @@
+import type { DocumentViewServerProps } from 'payload'
+
 import { Suspense } from 'react'
 import { History, LoaderCircle } from 'lucide-react'
 
@@ -43,15 +45,13 @@ const TransactionList = async ({ page, limit, search, sort, type }: TransactionL
   })
 
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
-      <DataTable
-        columns={columns}
-        data={docs}
-        pageCount={totalPages}
-        slug="transactions"
-        label="Buat Transaksi"
-      />
-    </div>
+    <DataTable
+      columns={columns}
+      data={docs}
+      pageCount={totalPages}
+      slug="transactions"
+      label="Buat Transaksi"
+    />
   )
 }
 
@@ -61,8 +61,7 @@ interface TransactionListPageProps {
   }>
 }
 
-export const TransactionListPage = async (props: TransactionListPageProps) => {
-  const searchParams = await props.searchParams
+export const TransactionListPage = async ({ searchParams }: DocumentViewServerProps) => {
   const page = Number(searchParams?.page || 1)
   const limit = Number(searchParams?.limit || 10)
   const search = typeof searchParams?.search === 'string' ? searchParams.search : undefined

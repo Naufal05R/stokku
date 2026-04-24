@@ -1,3 +1,5 @@
+import type { DocumentViewServerProps } from 'payload'
+
 import { Suspense } from 'react'
 import { LoaderCircle } from 'lucide-react'
 
@@ -5,16 +7,9 @@ import { ItemList } from '../components/item-list'
 
 import { ItemListTemplate } from './item-list-template'
 
-interface ItemListPageProps {
-  searchParams: Promise<{
-    [key: string]: string | string[] | undefined
-  }>
-}
-
 const isString = (value: unknown): value is string => typeof value === 'string'
 
-export const ItemListPage = async (props: ItemListPageProps) => {
-  const searchParams = await props.searchParams
+export const ItemListPage = async ({ searchParams }: DocumentViewServerProps) => {
   const page = Number(searchParams?.page || 1)
   const limit = Number(searchParams?.limit || 10)
   const search = typeof searchParams?.search === 'string' ? searchParams.search : undefined

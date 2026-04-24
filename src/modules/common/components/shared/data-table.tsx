@@ -1,11 +1,7 @@
 'use client'
 
 import type { CollectionSlug } from 'payload'
-import type {
-  ColumnDef,
-  ColumnFiltersState,
-  VisibilityState,
-} from '@tanstack/react-table'
+import type { ColumnDef, ColumnFiltersState, VisibilityState } from '@tanstack/react-table'
 
 import { useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
@@ -79,10 +75,10 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <>
+    <div className="rounded-lg border border-border bg-card overflow-hidden">
       <DataTableHeader table={table} slug={slug} label={label} />
       <DataTableContent table={table} columns={columns} />
       <DataTablePagination table={table} />
-    </>
+    </div>
   )
 }

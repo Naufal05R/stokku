@@ -51,14 +51,12 @@ export const ItemList = async ({ page, limit, search, sort, category, unit }: It
   })
 
   return (
-    <div className="rounded-lg border border-border bg-card overflow-hidden">
-      <DataTable
-        columns={columns}
-        data={docs}
-        pageCount={totalPages}
-        slug="items"
-        label="Tambah Barang"
-      />
-    </div>
+    <DataTable
+      columns={columns}
+      data={docs}
+      pageCount={totalPages}
+      slug="items"
+      label="Tambah Barang"
+    />
   )
 }

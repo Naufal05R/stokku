@@ -21,6 +21,7 @@ interface TransactionItemSelectorProps {
   value: string
   onChange: (id: string, recordedQty: number) => void
   items: { id: string; name: string; quantity: number }[]
+  disabled?: boolean
 }
 
 export const TransactionItemSelector = ({
@@ -30,14 +31,16 @@ export const TransactionItemSelector = ({
   value,
   onChange,
   items,
+  disabled,
 }: TransactionItemSelectorProps) => (
-  <Popover open={open} onOpenChange={setOpen}>
+  <Popover open={open} onOpenChange={disabled ? undefined : setOpen}>
     <PopoverTrigger asChild>
       <Button
         variant="outline"
         role="combobox"
         aria-expanded={open}
         className="w-full justify-between font-normal"
+        disabled={disabled}
       >
         {value ? items.find((i) => i.id === value)?.name : placeholder}
         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

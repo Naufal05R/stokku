@@ -1,9 +1,11 @@
 'use client'
 
+import type { User } from '@/payload-types'
+
 import { useState } from 'react'
 import { PencilLine, Save } from 'lucide-react'
 
-import { useField, useForm } from '@payloadcms/ui'
+import { useAuth, useField, useForm } from '@payloadcms/ui'
 
 import { Button } from '@/modules/common/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/modules/common/components/ui/card'
@@ -19,6 +21,9 @@ interface CreateTransactionFormProps {
 
 export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => {
   const { submit } = useForm()
+  const { user } = useAuth<User>()
+
+  const isAdmin = user?.role === 'admin'
 
   const { setValue: setPathItem } = useField<number>({ path: 'item' })
   const { setValue: setPathType } = useField<string>({ path: 'type' })
@@ -77,6 +82,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                 onChange={(id) => setSelectedInbound({ ...selectedInbound, id })}
                 placeholder="Pilih barang untuk masuk..."
                 items={items}
+                disabled={!isAdmin}
               />
             </div>
             <div className="space-y-2">
@@ -89,6 +95,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                   setSelectedInbound({ ...selectedInbound, qty: Number(e.target.value) })
                 }
                 placeholder="24"
+                disabled={!isAdmin}
               />
             </div>
             <div className="space-y-2">
@@ -99,6 +106,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                 value={selectedInbound.note}
                 onChange={(e) => setSelectedInbound({ ...selectedInbound, note: e.target.value })}
                 placeholder="Contoh: Kiriman dari Jakarta..."
+                disabled={!isAdmin}
               />
             </div>
             <Button
@@ -111,6 +119,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                   selectedInbound.note,
                 )
               }
+              disabled={!isAdmin}
             >
               <PencilLine className="mr-2 h-4 w-4" /> Catat Barang Masuk
             </Button>
@@ -127,6 +136,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                 onChange={(id) => setSelectedOutbound({ ...selectedOutbound, id })}
                 placeholder="Pilih barang untuk keluar..."
                 items={items}
+                disabled={!isAdmin}
               />
             </div>
             <div className="space-y-2">
@@ -139,6 +149,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                   setSelectedOutbound({ ...selectedOutbound, qty: Number(e.target.value) })
                 }
                 placeholder="Jumlah keluar"
+                disabled={!isAdmin}
               />
             </div>
             <div className="space-y-2">
@@ -149,6 +160,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                 value={selectedOutbound.note}
                 onChange={(e) => setSelectedOutbound({ ...selectedOutbound, note: e.target.value })}
                 placeholder="Contoh: Pengiriman ke Jakarta..."
+                disabled={!isAdmin}
               />
             </div>
             <Button
@@ -162,6 +174,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                   selectedOutbound.note,
                 )
               }
+              disabled={!isAdmin}
             >
               <PencilLine className="mr-2 h-4 w-4" /> Catat Barang Keluar
             </Button>
@@ -184,6 +197,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                 onChange={(id, recorded) => setSelectedOpname({ ...selectedOpname, id, recorded })}
                 placeholder="Pilih barang..."
                 items={items}
+                disabled={!isAdmin}
               />
             </div>
             <div className="space-y-2">
@@ -203,6 +217,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                   setSelectedOpname({ ...selectedOpname, physical: Number(e.target.value) })
                 }
                 placeholder="Isi hasil hitung fisik..."
+                disabled={!isAdmin}
               />
             </div>
           </div>
@@ -214,6 +229,7 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
               value={selectedOpname.note}
               onChange={(e) => setSelectedOpname({ ...selectedOpname, note: e.target.value })}
               placeholder="Contoh: Opname akhir bulan..."
+              disabled={!isAdmin}
             />
           </div>
 
@@ -229,7 +245,12 @@ export const CreateTransactionForm = ({ items }: CreateTransactionFormProps) => 
                 </p>
               )}
             </div>
-            <Button type="button" variant="outline" onClick={handleOpnameSubmit}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleOpnameSubmit}
+              disabled={!isAdmin}
+            >
               <Save className="mr-2 h-4 w-4" />
               Simpan Penyesuaian
             </Button>

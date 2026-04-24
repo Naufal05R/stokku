@@ -1,10 +1,12 @@
 'use client'
 
+import type { User } from '@/payload-types'
+
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Save } from 'lucide-react'
 
-import { useField, useForm } from '@payloadcms/ui'
+import { useAuth, useField, useForm } from '@payloadcms/ui'
 
 import { ITEM_CATEGORY_OPTIONS, ITEM_UNIT_OPTIONS } from '../constants'
 import {
@@ -20,7 +22,10 @@ import {
 
 export const ItemCreate = ({ id, isEdit }: { id?: string; isEdit: boolean }) => {
   const { submit } = useForm()
+  const { user } = useAuth<User>()
   const router = useRouter()
+
+  const isAdmin = user?.role === 'admin'
 
   const { value: code, setValue: setCode } = useField<string>({ path: 'code' })
   const { value: name, setValue: setName } = useField<string>({ path: 'name' })
@@ -80,6 +85,7 @@ export const ItemCreate = ({ id, isEdit }: { id?: string; isEdit: boolean }) => 
                 placeholder="Contoh: Laptop Gaming"
                 value={name || ''}
                 onChange={(e) => setName(e.target.value)}
+                disabled={!isAdmin}
               />
             </div>
 
@@ -92,12 +98,13 @@ export const ItemCreate = ({ id, isEdit }: { id?: string; isEdit: boolean }) => 
                 placeholder="Contoh: BRG-001"
                 value={code || ''}
                 onChange={(e) => setCode(e.target.value)}
+                disabled={!isAdmin}
               />
             </div>
 
             <div className="col-span-3 sm:col-span-2 md:col-span-3 xl:col-span-2 space-y-2">
               <Label>Kategori</Label>
-              <Select value={category || ''} onValueChange={setCategory}>
+              <Select value={category || ''} onValueChange={setCategory} disabled={!isAdmin}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Pilih kategori" />
                 </SelectTrigger>
@@ -115,7 +122,7 @@ export const ItemCreate = ({ id, isEdit }: { id?: string; isEdit: boolean }) => 
               <Label>
                 Satuan (UoM) <span className="text-destructive">*</span>
               </Label>
-              <Select value={unit || ''} onValueChange={setUnit}>
+              <Select value={unit || ''} onValueChange={setUnit} disabled={!isAdmin}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Pilih satuan" />
                 </SelectTrigger>
@@ -140,6 +147,7 @@ export const ItemCreate = ({ id, isEdit }: { id?: string; isEdit: boolean }) => 
                 placeholder="Contoh: Rak A-01"
                 value={position || ''}
                 onChange={(e) => setPosition(e.target.value)}
+                disabled={!isAdmin}
               />
             </div>
 
@@ -159,13 +167,14 @@ export const ItemCreate = ({ id, isEdit }: { id?: string; isEdit: boolean }) => 
                 placeholder="0"
                 value={minQuantity ?? ''}
                 onChange={(e) => setMinQuantity(Number(e.target.value))}
+                disabled={!isAdmin}
               />
             </div>
           </div>
         </div>
 
         <div className="flex justify-end">
-          <Button type="button" onClick={handleSubmit}>
+          <Button type="button" onClick={handleSubmit} disabled={!isAdmin}>
             <Save className="mr-2 h-4 w-4" /> {isEdit ? 'Simpan Perubahan' : 'Simpan Barang'}
           </Button>
         </div>

@@ -1,7 +1,7 @@
-import Link from 'next/link'
 import { Download, ArrowRight } from 'lucide-react'
 
 import { Button } from '@/modules/common/components/ui'
+import { DemoButton } from './demo-button'
 
 export function CtaSection() {
   return (
@@ -24,12 +24,10 @@ export function CtaSection() {
               Download Docker Compose
             </a>
           </Button>
-          <Button asChild variant="outline" size="lg">
-            <Link href="/admin">
-              Lihat Demo
-              <ArrowRight />
-            </Link>
-          </Button>
+          <DemoButton variant="outline" size="lg">
+            Lihat Demo
+            <ArrowRight />
+          </DemoButton>
         </div>
 
         <p className="mt-6 text-sm text-muted-foreground">

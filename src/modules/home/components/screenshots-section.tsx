@@ -1,10 +1,10 @@
-import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
-import { Button } from '@/modules/common/components/ui'
 import { DashboardMockup } from './dashboard-mockup'
 import { ItemsMockup } from './items-mockup'
 import { TransactionMockup } from './transaction-mockup'
+
+import { DemoButton } from './demo-button'
 
 const tabs = [
   {
@@ -54,12 +54,10 @@ export function ScreenshotsSection() {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <Button asChild>
-            <Link href="/admin">
-              Coba Demo Langsung
-              <ArrowRight />
-            </Link>
-          </Button>
+          <DemoButton>
+            Coba Demo Langsung
+            <ArrowRight />
+          </DemoButton>
         </div>
       </div>
     </section>

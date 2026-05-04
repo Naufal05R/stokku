@@ -1,13 +1,14 @@
-import Link from 'next/link'
 import { ArrowRight, Download } from 'lucide-react'
 
 import { Button } from '@/modules/common/components/ui'
 import { Badge } from '@/modules/common/components/ui'
+
 import { DashboardMockup } from './dashboard-mockup'
+import { DemoButton } from './demo-button'
 
 export function HeroSection() {
   return (
-    <section className="bg-gradient-to-b from-background to-muted/40 py-20 md:py-28">
+    <section className="bg-linear-to-b from-background to-muted/40 py-20 md:py-28">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="flex flex-col gap-6">
@@ -36,12 +37,10 @@ export function HeroSection() {
                   Download Docker Compose
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link href="/admin">
-                  Lihat Demo
-                  <ArrowRight />
-                </Link>
-              </Button>
+              <DemoButton variant="outline" size="lg">
+                Lihat Demo
+                <ArrowRight />
+              </DemoButton>
             </div>
 
             <p className="text-sm text-muted-foreground">

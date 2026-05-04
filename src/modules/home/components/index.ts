@@ -1,3 +1,4 @@
+export * from './demo-button'
 export * from './landing-navbar'
 export * from './hero-section'
 export * from './pain-points-section'

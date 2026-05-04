@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { Box, Menu, X } from 'lucide-react'
 
 import { cn } from '@/modules/common/utils'
-import { Button } from '@/modules/common/components/ui'
+
+import { DemoButton } from './demo-button'
 
 const navLinks = [
   { label: 'Fitur', href: '#features' },
@@ -37,9 +38,7 @@ export function LandingNavbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button asChild size="sm">
-            <Link href="/admin">Live Demo</Link>
-          </Button>
+          <DemoButton size="sm">Live Demo</DemoButton>
         </div>
 
         <button
@@ -78,11 +77,9 @@ export function LandingNavbar() {
             GitHub
           </Link>
           <div className="pt-2">
-            <Button asChild size="sm" className="w-full">
-              <Link href="/admin" onClick={() => setOpen(false)}>
-                Live Demo
-              </Link>
-            </Button>
+            <DemoButton size="sm" className="w-full" onClick={() => setOpen(false)}>
+              Live Demo
+            </DemoButton>
           </div>
         </nav>
       </div>

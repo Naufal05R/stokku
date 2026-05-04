@@ -45,6 +45,9 @@ PAYLOAD_SECRET=your_random_secret_string
 
 DEFAULT_ADMIN_USER_EMAIL=admin@example.com
 DEFAULT_ADMIN_USER_PASSWORD=your_admin_password
+
+DEFAULT_GUEST_USER_EMAIL=guest@example.com
+DEFAULT_GUEST_USER_PASSWORD=your_guest_password
 ```
 
 ### 3. Install dependensi
@@ -130,4 +133,11 @@ Aplikasi akan tersedia di [http://localhost:3000](http://localhost:3000). Docker
 
 ## Struktur Akun
 
-Setelah menjalankan seed, akun default tersedia sesuai dengan nilai `DEFAULT_ADMIN_USER_EMAIL` dan `DEFAULT_ADMIN_USER_PASSWORD` yang diset di `.env`. Login tersedia di `/admin/login`.
+Setelah menjalankan seed, akun default tersedia sesuai dengan nilai yang diset di `.env`. Login tersedia di `/admin/login`.
+
+| Variable | Role | Akses |
+|---|---|---|
+| `DEFAULT_ADMIN_USER_EMAIL` / `DEFAULT_ADMIN_USER_PASSWORD` | `admin` | Full access |
+| `DEFAULT_GUEST_USER_EMAIL` / `DEFAULT_GUEST_USER_PASSWORD` | `guest` | Read only |
+
+Jika salah satu pasangan variable tidak diset, seeder akan melewati pembuatan akun tersebut.

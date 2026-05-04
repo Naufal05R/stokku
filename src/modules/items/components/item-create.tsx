@@ -2,7 +2,6 @@
 
 import type { User } from '@/payload-types'
 
-import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Save } from 'lucide-react'
 
@@ -31,32 +30,9 @@ export const ItemCreate = ({ id, isEdit }: { id?: string; isEdit: boolean }) => 
   const { value: name, setValue: setName } = useField<string>({ path: 'name' })
   const { value: category, setValue: setCategory } = useField<string>({ path: 'category' })
   const { value: unit, setValue: setUnit } = useField<string>({ path: 'unit' })
-  const { value: quantity, setValue: setQuantity } = useField<number>({ path: 'quantity' })
+  const { value: quantity } = useField<number>({ path: 'quantity' })
   const { value: minQuantity, setValue: setMinQuantity } = useField<number>({ path: 'minQuantity' })
   const { value: position, setValue: setPosition } = useField<string>({ path: 'position' })
-
-  useEffect(() => {
-    if (isEdit && id) {
-      const fetchItem = async () => {
-        try {
-          const res = await fetch(`/api/items/${id}`)
-          if (!res.ok) throw new Error('Failed to fetch item')
-          const data = await res.json()
-
-          setCode(data.code)
-          setName(data.name)
-          setCategory(data.category)
-          setUnit(data.unit)
-          setQuantity(data.quantity)
-          setMinQuantity(data.minQuantity)
-          setPosition(data.position)
-        } catch (error) {
-          console.error('Error fetching item:', error)
-        }
-      }
-      fetchItem()
-    }
-  }, [id, isEdit, setCode, setName, setCategory, setUnit, setQuantity, setMinQuantity, setPosition])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -43,8 +43,8 @@ POSTGRES_DB=stokku
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/stokku
 PAYLOAD_SECRET=your_random_secret_string
 
-ADMIN_DEFAULT_USER_EMAIL=admin@example.com
-ADMIN_DEFAULT_USER_PASSWORD=your_admin_password
+DEFAULT_ADMIN_USER_EMAIL=admin@example.com
+DEFAULT_ADMIN_USER_PASSWORD=your_admin_password
 ```
 
 ### 3. Install dependensi
@@ -130,4 +130,4 @@ Aplikasi akan tersedia di [http://localhost:3000](http://localhost:3000). Docker
 
 ## Struktur Akun
 
-Setelah menjalankan seed, akun default tersedia sesuai dengan nilai `ADMIN_DEFAULT_USER_EMAIL` dan `ADMIN_DEFAULT_USER_PASSWORD` yang diset di `.env`. Login tersedia di `/admin/login`.
+Setelah menjalankan seed, akun default tersedia sesuai dengan nilai `DEFAULT_ADMIN_USER_EMAIL` dan `DEFAULT_ADMIN_USER_PASSWORD` yang diset di `.env`. Login tersedia di `/admin/login`.

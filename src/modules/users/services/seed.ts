@@ -1,13 +1,13 @@
 import { Payload } from 'payload'
 
 const { email, password } = {
-  email: process.env.ADMIN_DEFAULT_USER_EMAIL,
-  password: process.env.ADMIN_DEFAULT_USER_PASSWORD,
+  email: process.env.DEFAULT_ADMIN_USER_EMAIL,
+  password: process.env.DEFAULT_ADMIN_USER_PASSWORD,
 }
 
 export const seedUser = async (payload: Payload): Promise<void> => {
   if (!email || !password) {
-    payload.logger.info('Seeder: ADMIN_DEFAULT_USER_EMAIL or ADMIN_DEFAULT_USER_PASSWORD not set')
+    payload.logger.info('Seeder: DEFAULT_ADMIN_USER_EMAIL or DEFAULT_ADMIN_USER_PASSWORD not set')
     payload.logger.info('Seeder: Skipping default admin user creation')
     return
   }

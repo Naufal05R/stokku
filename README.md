@@ -1,67 +1,133 @@
-# Payload Blank Template
+# Stokku
 
-This template comes configured with the bare minimum to get started on anything you need.
+Stokku adalah sistem manajemen inventaris berbasis web yang dibangun dengan Next.js dan Payload CMS. Aplikasi ini memungkinkan pengelolaan data barang, pencatatan transaksi keluar/masuk, dan kontrol akses berbasis peran (RBAC) untuk pengguna Admin dan Guest.
 
-## Quick start
+## Tech Stack
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+- **Framework**: Next.js 16 + Payload CMS 3
+- **Database**: PostgreSQL 16
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4 + shadcn/ui
+- **Package Manager**: pnpm
 
-## Quick Start - local setup
+## Prasyarat
 
-To spin up this template locally, follow these steps:
+Pastikan sudah terinstal:
 
-### Clone
+- Node.js `>=22.15.0`
+- pnpm `^9` atau `^10`
+- PostgreSQL (lokal atau via Docker)
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## Instalasi & Menjalankan Lokal
 
-### Development
+### 1. Clone repositori
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+```bash
+git clone https://github.com/naufal05r/stokku.git
+cd stokku
+```
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+### 2. Salin file environment
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+```bash
+cp .env.example .env
+```
 
-#### Docker (Optional)
+Isi variabel berikut di file `.env`:
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+```env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=your_password
+POSTGRES_DB=stokku
 
-To do so, follow these steps:
+DATABASE_URL=postgresql://postgres:your_password@localhost:5432/stokku
+PAYLOAD_SECRET=your_random_secret_string
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+ADMIN_DEFAULT_USER_EMAIL=admin@example.com
+ADMIN_DEFAULT_USER_PASSWORD=your_admin_password
+```
 
-## How it works
+### 3. Install dependensi
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+```bash
+pnpm install
+```
 
-### Collections
+### 4. Jalankan migrasi database
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+```bash
+pnpm migrate
+```
 
-- #### Users (Authentication)
+### 5. (Opsional) Seed data awal
 
-  Users are auth-enabled collections that have access to the admin panel.
+```bash
+pnpm seed
+```
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+Perintah ini akan mengisi database dengan data contoh untuk users, items, dan transactions.
 
-- #### Media
+### 6. Jalankan dev server
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+```bash
+pnpm dev
+```
 
-### Docker
+Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+> Jika mengalami masalah cache, gunakan `pnpm devsafe` untuk membersihkan `.next` sebelum menjalankan dev server.
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+## Instalasi via Docker
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+Cara tercepat untuk menjalankan seluruh stack (app + database) menggunakan Docker Compose.
 
-## Questions
+### 1. Clone repositori dan salin file environment
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+```bash
+git clone https://github.com/naufal05r/stokku.git
+cd stokku
+cp .env.example .env
+```
+
+Isi file `.env` seperti contoh di atas.
+
+### 2. Jalankan dengan Docker Compose
+
+```bash
+docker-compose up
+```
+
+Atau jalankan di background:
+
+```bash
+docker-compose up -d
+```
+
+Aplikasi akan tersedia di [http://localhost:3000](http://localhost:3000). Docker Compose akan otomatis menjalankan migrasi database saat container app pertama kali start.
+
+## Scripts
+
+| Perintah | Keterangan |
+|---|---|
+| `pnpm dev` | Menjalankan development server |
+| `pnpm devsafe` | Bersihkan cache `.next` lalu jalankan dev server |
+| `pnpm build` | Build aplikasi untuk production |
+| `pnpm start` | Jalankan production server (setelah build) |
+| `pnpm migrate` | Jalankan migrasi database |
+| `pnpm seed` | Isi database dengan data contoh |
+| `pnpm lint` | Jalankan ESLint |
+| `pnpm test` | Jalankan semua test (integration + e2e) |
+| `pnpm test:int` | Jalankan integration test (Vitest) |
+| `pnpm test:e2e` | Jalankan end-to-end test (Playwright) |
+
+## Fitur
+
+- **Manajemen Barang** — Tambah, edit, dan hapus data barang/produk
+- **Transaksi** — Catat transaksi masuk dan keluar stok
+- **Dashboard** — Ringkasan kondisi inventaris secara keseluruhan
+- **RBAC** — Role `admin` memiliki akses penuh; role `guest` hanya dapat membaca data
+- **Dark/Light Mode** — Toggle tema dari panel admin
+
+## Struktur Akun
+
+Setelah menjalankan seed, akun default tersedia sesuai dengan nilai `ADMIN_DEFAULT_USER_EMAIL` dan `ADMIN_DEFAULT_USER_PASSWORD` yang diset di `.env`. Login tersedia di `/admin/login`.

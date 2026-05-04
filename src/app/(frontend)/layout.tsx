@@ -1,8 +1,11 @@
 import type { ReactNode } from 'react'
 
+import '@/styles/global.css'
+
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description:
+    'Stokku — aplikasi manajemen inventaris gratis dan open source yang bisa kamu pasang sendiri.',
+  title: 'Stokku — Kelola Stok Bisnis Tanpa Langganan',
 }
 
 interface RootLayoutProps {
@@ -13,10 +16,8 @@ export default async function RootLayout(props: RootLayoutProps) {
   const { children } = props
 
   return (
-    <html lang="en">
-      <body>
-        <main>{children}</main>
-      </body>
+    <html lang="id" className="scroll-smooth">
+      <body>{children}</body>
     </html>
   )
 }

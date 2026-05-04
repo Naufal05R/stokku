@@ -1,5 +1,5 @@
-import { redirect } from 'next/navigation'
+import { HomePage } from '@/modules/home/templates'
 
-export default async function HomePage() {
-  redirect('/admin')
+export default function Page() {
+  return <HomePage />
 }

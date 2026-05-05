@@ -1,0 +1,21 @@
+{
+  "name": "Stokku",
+  "short_name": "Stokku",
+  "description": "Aplikasi manajemen inventaris gratis, open source, dan self-hosted.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -45,6 +45,9 @@ export default buildConfig({
           Component: '@/modules/auth/templates#ForgotPasswordPage',
           path: '/forgot',
         },
+        createFirstUser: {
+          Component: '@/modules/auth/templates#CreateFirstUserPage',
+        },
       },
     },
     importMap: {

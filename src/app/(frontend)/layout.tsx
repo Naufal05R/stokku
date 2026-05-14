@@ -7,6 +7,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://stokku.naufalrabban
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  applicationName: 'Stokku',
   title: {
     default: 'Stokku — Kelola Stok Bisnis Tanpa Langganan',
     template: '%s | Stokku',
@@ -71,8 +72,7 @@ const jsonLd = {
       '@id': `${siteUrl}/#website`,
       url: siteUrl,
       name: 'Stokku',
-      description:
-        'Aplikasi manajemen inventaris gratis, open source, dan self-hosted.',
+      description: 'Aplikasi manajemen inventaris gratis, open source, dan self-hosted.',
       inLanguage: 'id-ID',
     },
     {
@@ -115,13 +115,13 @@ export default async function RootLayout(props: RootLayoutProps) {
 
   return (
     <html lang="id" className="scroll-smooth">
-      <body>
+      <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        {children}
-      </body>
+      </head>
+      <body>{children}</body>
     </html>
   )
 }

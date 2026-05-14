@@ -31,6 +31,10 @@ const steps = [
     title: 'Isi konfigurasi awal',
     description:
       'Unduh juga file .env.example, ganti namanya menjadi .env, lalu isi tiga hal: password database, email Admin, dan password Admin. Hanya isi teks biasa — tidak ada coding.',
+    action: {
+      label: 'Download .env.example',
+      href: 'https://github.com/naufal05r/stokku/raw/main/.env.example',
+    },
     code: null,
   },
   {

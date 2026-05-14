@@ -4,21 +4,20 @@ FROM node:22-alpine AS base
 # Stage 1: Dependencies
 # ======================================================
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat python3 make g++
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-# Install all deps for build stage, targeting linux x64 musl (alpine)
+ARG TARGETARCH
 RUN corepack enable pnpm && \
     npm_config_os=linux \
-    npm_config_cpu=x64 \
+    npm_config_cpu=${TARGETARCH} \
     npm_config_libc=musl \
     pnpm i --frozen-lockfile
 
-# Prune devDependencies in-place, symlinks still intact
 RUN npm_config_os=linux \
-    npm_config_cpu=x64 \
+    npm_config_cpu=${TARGETARCH} \
     npm_config_libc=musl \
     pnpm prune --prod
 
@@ -71,10 +70,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# node_modules from cleaner stage: pruned + stripped
 COPY --from=cleaner --chown=nextjs:nodejs /app/node_modules ./node_modules
 
-# Required for `npx payload migrate`
 COPY --from=builder --chown=nextjs:nodejs /app/src ./src
 COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
 COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json

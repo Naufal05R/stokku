@@ -15,7 +15,6 @@ services:
 
   app:
     image: ghcr.io/naufal05r/stokku:latest
-    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
